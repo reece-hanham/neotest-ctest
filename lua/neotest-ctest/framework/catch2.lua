@@ -15,7 +15,6 @@ catch2.include_query = [[
   )
 ]]
 catch2.tests_query = [[
-  ;; query
   ((namespace_definition
     name: (namespace_identifier) @namespace.name
   )) @namespace.definition
@@ -31,10 +30,9 @@ catch2.tests_query = [[
         (call_expression
           function: (identifier) @test.kind (#any-of? @test.kind "TEST_CASE" "TEST_CASE_METHOD" "SCENARIO")
           arguments: (argument_list
-            . (identifier) ? @test.fixture
-            . (string_literal (string_content) @test.name )
-            . (string_literal (string_content) @test.tag ) ?
-            .
+            (identifier)? @test.fixture
+            . (string_literal (string_content) @test.name)
+            . (string_literal (string_content) @test.tag)?
           )
         )
       ) @test.statement
@@ -46,10 +44,9 @@ catch2.tests_query = [[
       (call_expression
         function: (identifier) @test.kind (#any-of? @test.kind "TEST_CASE" "TEST_CASE_METHOD" "SCENARIO")
         arguments: (argument_list
-          . (identifier) ? @test.fixture
-          . (string_literal (string_content) @test.name )
-          . (string_literal (string_content) @test.tag ) ?
-          .
+          (identifier)? @test.fixture
+          . (string_literal (string_content) @test.name)
+          . (string_literal (string_content) @test.tag)?
         )
       )
     ) @test.statement

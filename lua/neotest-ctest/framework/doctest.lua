@@ -15,13 +15,12 @@ doctest.include_query = [[
   )
 ]]
 doctest.tests_query = [[
-  ;; query
-  ((namespace_definition
+((namespace_definition
     name: (namespace_identifier) @namespace.name
   )) @namespace.definition
   ;; query (tests within namespace)
   ;; NOTE: There seem to be some limitation with either treesitter or the cpp treesitter parser
-  ;; to capture range of sibling nodes. See doctest.build_position for workaround using
+  ;; to capture range of sibling nodes. See catch2.build_position for workaround using
   ;; @test.statement and @test.body to construct @test.definition
   ((namespace_definition
     name: (namespace_identifier)
@@ -31,9 +30,9 @@ doctest.tests_query = [[
         (call_expression
           function: (identifier) @test.kind (#any-of? @test.kind "TEST_CASE" "TEST_CASE_FIXTURE" "SCENARIO")
           arguments: (argument_list
-            . (identifier) ? @test.fixture
-            . (string_literal (string_content) @test.name )
-            .
+            (identifier)? @test.fixture
+            . (string_literal (string_content) @test.name)
+            . (string_literal (string_content) @test.tag)?
           )
         )
       ) @test.statement
@@ -45,9 +44,9 @@ doctest.tests_query = [[
       (call_expression
         function: (identifier) @test.kind (#any-of? @test.kind "TEST_CASE" "TEST_CASE_FIXTURE" "SCENARIO")
         arguments: (argument_list
-          . (identifier) ? @test.fixture
-          . (string_literal (string_content) @test.name )
-          .
+          (identifier)? @test.fixture
+          . (string_literal (string_content) @test.name)
+          . (string_literal (string_content) @test.tag)?
         )
       )
     ) @test.statement
